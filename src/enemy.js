@@ -1,14 +1,15 @@
 /* eslint-disable func-names */
-const Character = require('./character');
+const Character = require("./character");
 
 function Enemy(config) {
   Character.call(this, config);
   this.damage = config.damage;
+  this.experienceReward = config.experienceReward || 100;
 }
 
 Enemy.prototype = Object.create(Character.prototype);
 
-Object.defineProperty(Enemy.prototype, 'constructor', {
+Object.defineProperty(Enemy.prototype, "constructor", {
   value: Enemy,
   enumerable: false,
   writable: true,
@@ -19,6 +20,9 @@ Enemy.prototype._describeAttack = function (target) {
 };
 
 Enemy.prototype.attack = function (target) {
+  if (!this.isAlive) {
+    throw new Error("Enemy can't attack as they are dead :(");
+  }
   target._takeDamage(this.damage);
   return this._describeAttack(target);
 };
