@@ -4,6 +4,8 @@ const Character = require('./character');
 function Player(config) {
   Character.call(this, config);
   this.equippedWeapon = null;
+  this.nextLevel = 1000;
+  this.currentExperience = 0;
 }
 
 Player.prototype = Object.create(Character.prototype);
@@ -23,8 +25,16 @@ Player.prototype.equip = function (weapon) {
 };
 
 Player.prototype.attack = function (target) {
-  target._takeDamage(this.equippedWeapon.damage);
+  target._takeDamage(this.equippedWeapon.damage + this.attackTotal);
+  if (!target.isAlive) {
+    this.currentExperience += target.experienceReward;
+  };
   return this._describeAttack(target);
 };
+
+Player.prototype.levelUp = function () {
+  this.level += 1;
+}
+
 
 module.exports = Player;
