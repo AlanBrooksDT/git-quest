@@ -5,12 +5,22 @@ function Character(config) {
   this.maxHealth = config.maxHealth;
   this.dialogue = config.dialogue;
   this.level = config.level || 1;
+  this.baseAttack = config.baseAttack || 0;
+  this.baseDefence = config.baseDefence || 0;
 }
 
 Character.prototype = {
   get isAlive() {
     return this.health > 0;
   },
+  get attackTotal() {
+    return this.baseAttack + this.level;
+  },
+
+  get defenceTotal() {
+    return this.baseDefence + this.level;
+  },
+
   _takeDamage: function (damage) {
     this.health -= damage;
     if (this.health < 0) {
